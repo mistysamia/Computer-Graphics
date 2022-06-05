@@ -1,0 +1,72 @@
+<html>
+<title>Rectangle</title>
+<canvas id="webglcanvas" width="700" height="700"></canvas>
+
+<script>
+
+    //Canvas and WebGL rendering context
+    var canvas = document.getElementById("webglcanvas"); 
+    var  gl = canvas.getContext("webgl"); 
+    
+	//Background and reset buffer	
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT); 
+	
+	//Vertex Shader Variable initialization
+	var vertexShaderSource =
+       `attribute vec3 a_coords; 
+        void main() {
+            gl_Position = vec4(a_coords, 1.0); 
+        }`;
+    
+	//Fragment  Shader Variable initialization
+    var fragmentShaderSource =
+       `void main() {
+            gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0); 
+        }`;
+    
+	
+	//Create and Compile Shaders  
+    var vsh = gl.createShader( gl.VERTEX_SHADER );
+    gl.shaderSource( vsh, vertexShaderSource );
+    gl.compileShader( vsh );
+
+    var fsh = gl.createShader( gl.FRAGMENT_SHADER );
+    gl.shaderSource( fsh, fragmentShaderSource );
+    gl.compileShader( fsh );
+	
+	//Link shaders and use program
+	var prog = gl.createProgram(); 
+    
+    gl.attachShader( prog, vsh ); 
+    gl.attachShader( prog, fsh );
+    gl.linkProgram( prog ); 
+    gl.useProgram(prog); 
+
+    //Associate Shaders 
+    var a_coords_location = gl.getAttribLocation(prog, "a_coords"); 
+
+    //Define Geometry
+	var coords = new Float32Array( [-0.5, -0.3, 0.0,
+									-0.5, 0.3, 0.0,
+									0.5, -0.3, 0.0,
+									0.5, 0.3, 0.0,
+									0.5, -0.3, 0.0,
+									-0.5, 0.3, 0.0
+									] );
+	//Vertex Buffer Objects 								
+	var a_coords_buffer = gl.createBuffer();
+    
+	//Vertex Buffer Objects (VBOs)	
+	gl.bindBuffer(gl.ARRAY_BUFFER, a_coords_buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, coords, gl.STATIC_DRAW); 
+    gl.vertexAttribPointer(a_coords_location, 3, gl.FLOAT, false, 0, 0); 
+	gl.enableVertexAttribArray(a_coords_location);  	
+	
+	//Draw Required Objects
+	gl.drawArrays(gl.TRIANGLES, 0, 3);  	
+	gl.drawArrays(gl.TRIANGLES, 3, 3);
+	
+	
+</script>
+</html>
