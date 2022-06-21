@@ -18,6 +18,7 @@
 			gl_Position = vec4(a_coords.x+u_shift,a_coords.y+u_shift,a_coords.z, 1.0);
 		else
 		    gl_Position = vec4(a_coords.x,a_coords.y,a_coords.z, 1.0);
+			
 		
 		v_color=a_colors;
         }`;
@@ -93,6 +94,10 @@
 	canvas.onmousedown = function ()
 	{  
     shift = shift + 0.2;
+	
+    if(shift>=0.6)
+	    shift=0.0;
+		
     gl.uniform1f(u_shift_location, shift);
 	
 	gl.clearColor(0.75, 0.75, 0.75, 1.0);
