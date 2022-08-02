@@ -336,19 +336,16 @@ function init() {
 	flag=true;
 	if (key == 40){
             ze = ze+0.15;
-	        if(ze>=2.4)
-	            ze=0.1;
+	       
 	        
 	        recursion(2.4,2.3,ze,111);
-	        recursion(2.4,2.3,ze,75.0);
+	        recursion(2.4,2.3,ze-0.9,75.0);
         } 
 	else if (key == 38){
             ze = ze-0.15;
-	        if(ze<-1.4)
-	            ze=0.1;
-	        
+	       
 	        recursion(2.4,2.3,ze,111);
-	        recursion(2.4,2.3,ze,75.0);
+	        recursion(2.4,2.3,ze-0.9,75.0);
         }};
 }
 
