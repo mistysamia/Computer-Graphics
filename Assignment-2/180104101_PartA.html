@@ -7,13 +7,6 @@
          var canvas = document.getElementById('my_Canvas');
          gl = canvas.getContext('webgl'); 
 
-         var radius = 0.02; 
-         var vertices = [];
-         for(let i=0.0; i<=Math.PI; i+=0.05){
-            vertices.push(i*Math.cos(i)*radius,i*Math.sin(i)*radius,0.0);
-         } 
-         var x=Math.PI;
-         var size=Math.PI;
 		 
 		 
 	
@@ -23,7 +16,6 @@
 	        uniform float u_shift;
         
 		    void main() {
-               //gl_Position = vec4(clamp(a_coords.x - u_shift, -0.5, 1.0), a_coords.y, a_coords.z, 1.0);
 			   gl_Position = vec4(a_coords, 1.0);
                gl_PointSize = distance(vec3(a_coords.x,a_coords.y,a_coords.z),vec3(0.0,0.0,0.0))*15.0;
             }`;
@@ -37,7 +29,8 @@
              void main() {
              gl_FragColor = vec4(u_color, 1.0);
             }`;
-            
+                 
+  
   
          /* Vertex Shader Compiler */
          var vsh = gl.createShader( gl.VERTEX_SHADER );
@@ -62,7 +55,14 @@
 		 
 	     /*Linking CPU to GPU*/
          var a_coords_location = gl.getAttribLocation(prog, "a_coords");
-
+         
+		 /*Vertices*/
+		 var radius = 0.02,vertices=[],circle_radius=Math.PI; 
+		 let i=0.0
+		 while(i<=circle_radius){
+		    vertices.push(i*Math.cos(i)*radius,i*Math.sin(i)*radius,0.0);
+			i+=0.2;
+		 } 
 		 
 		 /*Buffer Memory*/
 		 var a_coords_buffer=gl.createBuffer();
@@ -84,17 +84,18 @@
         gl.drawArrays(gl.POINTS, 0, vertices.length); 		
          	
 		
-		
+	
 		canvas.onmousedown = function ()
         {  
-        size+=2*0.2;
-        for(let i=x+0.19; i<=size; i+=0.2){
-            vertices.push(i*Math.cos(i)*radius,i*Math.sin(i)*radius,0.0);    
-        }
-		x=size;
-		
-		
-		
+
+		circle_radius+=2*0.2,i=Math.PI;
+		if(circle_radius<=46){
+			while(i<=circle_radius){
+		        vertices.push(i*Math.cos(i)*radius,i*Math.sin(i)*radius,0.0);
+			    i+=0.2;
+		    }
+		}
+
 		gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(vertices), gl.STATIC_DRAW);
 		gl.clearColor(1.0, 1.0, 0.8, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
@@ -106,4 +107,5 @@
 
 
 
+</html>
 </html>
